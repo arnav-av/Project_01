@@ -1,95 +1,91 @@
-#include<stdio.h>
-#include<string.h>
-
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 int main()
 {
- char username[50]= "obi";
- char password[50]= "1234";
- int i= 10;
+    const char *valid_username = getenv("CAL_C_USER");
+    const char *valid_password = getenv("CAL_C_PASS");
 
+    if (valid_username == NULL || valid_password == NULL)
+    {
+        printf("Error: CAL_C_USER and CAL_C_PASS environment variables not set.\n");
+        return 1;
+    }
 
- while (i != 0)
- {
+    char username[50];
+    char password[50];
+    int authenticated = 0;
 
- 
-	printf("Enter username: ");
-	scanf("%s", username);
-	printf("Enter password: ");
-	
-	scanf("%s", password);
+    while (!authenticated)
+    {
+        printf("Enter username: ");
+        scanf("%49s", username);
+        printf("Enter password: ");
+        scanf("%49s", password);
 
-	if (strcmp(username, "obi")==0 && strcmp(password, "1234")==0)
-	{
-		printf("\n");
-		i = 0;
-	}
-	
-	else printf("Enter valid login info\n");
-	
-    
- }
-   
- 
+        if (strcmp(username, valid_username) == 0 && strcmp(password, valid_password) == 0)
+        {
+            printf("\n");
+            authenticated = 1;
+        }
+        else
+        {
+            printf("Enter valid login info\n");
+        }
+    }
 
- printf("============= WELCOME TO Cal_C =============\n");
+    printf("============= WELCOME TO Cal_C =============\n");
 
-	{
-		char op;
-		double n1, n2;
-		int i = 1;
-		do
-		{
-			printf("Enter a operation (+ - * /): ");
-			scanf("%s", &op);
-			printf("Enter the first integer: ");
-			scanf("%lf", &n1);
-			printf("Enter the second integer: ");
-			scanf("%lf", &n2);
+    {
+        char op;
+        double n1, n2;
+        int choice = 1;
 
+        do
+        {
+            printf("Enter an operation (+ - * /): ");
+            scanf(" %c", &op);
+            printf("Enter the first number: ");
+            scanf("%lf", &n1);
+            printf("Enter the second number: ");
+            scanf("%lf", &n2);
 
-			switch (op)
-			{
-			 case '+':
-				printf(" %.1lf + %.1lf = %.1lf", n1, n2, n1 + n2);
-				break;
+            switch (op)
+            {
+                case '+':
+                    printf(" %.1lf + %.1lf = %.1lf\n", n1, n2, n1 + n2);
+                    break;
 
-			 case '-':
-				printf(" %.1lf - %.1lf = %.1lf", n1, n2, n1 - n2);
-				break;
+                case '-':
+                    printf(" %.1lf - %.1lf = %.1lf\n", n1, n2, n1 - n2);
+                    break;
 
-			 case '*':
-				printf(" %.1lf * %.1lf = %.1lf", n1, n2, n1 * n2);
-				break;
+                case '*':
+                    printf(" %.1lf * %.1lf = %.1lf\n", n1, n2, n1 * n2);
+                    break;
 
-			 case '/':
-				printf(" %.1lf / %.1lf = %.1lf", n1, n2, n1 / n2);
-				break;
+                case '/':
+                    if (n2 == 0)
+                        printf("Error: Division by zero!\n");
+                    else
+                        printf(" %.1lf / %.1lf = %.1lf\n", n1, n2, n1 / n2);
+                    break;
 
-		
-			 default:
-				printf("Entered operator is invalid!!");
-				break;
+                default:
+                    printf("Invalid operator!\n");
+                    break;
+            }
 
-			
-			}
-			printf("\nDo you wish to continue?\n");
-			printf("1. Yes\n 2. No\n");
-			scanf("%d", &i);
-			if (i == 2)
-			{
-				printf("GoodBye");
-			}
-		}
-		while(i == 1);
-	}
+            printf("\nDo you wish to continue?\n");
+            printf("1. Yes\n2. No\n");
+            scanf("%d", &choice);
 
+            if (choice == 2)
+                printf("Goodbye!\n");
 
+        } while (choice == 1);
+    }
 
-
-
-
-
- return 0;
+    return 0;
 }
-
